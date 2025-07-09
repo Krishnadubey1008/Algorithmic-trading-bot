@@ -6,9 +6,9 @@
 // Use environment variables or a secure vault in production.
 namespace config {
     // --- API Keys ---
-    const std::string ALPHA_VANTAGE_API_KEY = "YOUR_ALPHA_VANTAGE_API_KEY";
-    const std::string ALPACA_API_KEY        = "YOUR_ALPACA_API_KEY";
-    const std::string ALPACA_SECRET_KEY     = "YOUR_ALPACA_SECRET_KEY";
+    const std::string ALPHA_VANTAGE_API_KEY = "";
+    const std::string ALPACA_API_KEY        = "";
+    const std::string ALPACA_SECRET_KEY     = "";
 
     // --- Trading Parameters ---
     const std::string SYMBOL = "AAPL";
