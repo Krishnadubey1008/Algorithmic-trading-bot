@@ -1,11 +1,12 @@
-// src/main.cpp
+
 #include "Backtester.hpp"
-#include "APIDataHandler.cpp" // Included for simple, single-file compilation
+#include "APIDataHandler.hpp" // <-- ADD THIS INCLUDE
 #include "Strategy.hpp"
 #include "ExecutionHandler.hpp"
 #include "config.h"
 #include <iostream>
 #include <memory>
+//... rest of the file
 
 int main() {
     try {
