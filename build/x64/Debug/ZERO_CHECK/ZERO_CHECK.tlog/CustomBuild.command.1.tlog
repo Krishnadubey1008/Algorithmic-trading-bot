@@ -1,0 +1,10 @@
+^C:\USERS\REKHA\ALGORITHMIC-TRADING-BOT\BUILD\CMAKEFILES\D26501DF42834BCDFAD7E7CF314E6126\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/rekha/Algorithmic-trading-bot -BC:/Users/rekha/Algorithmic-trading-bot/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file C:/Users/rekha/Algorithmic-trading-bot/build/TradingBotCpp.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
