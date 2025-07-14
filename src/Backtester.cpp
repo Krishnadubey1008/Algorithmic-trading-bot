@@ -1,5 +1,6 @@
 // src/Backtester.cpp
 #include "Backtester.hpp"
+#include "config.h"
 #include <iostream>
 #include <iomanip>
 
