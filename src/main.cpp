@@ -2,6 +2,7 @@
 #include "Backtester.hpp"
 #include "APIDataHandler.hpp" // <-- ADD THIS INCLUDE
 #include "Strategy.hpp"
+#include "HybridStrategy.hpp"
 #include "ExecutionHandler.hpp"
 #include "config.h"
 #include <iostream>
@@ -12,7 +13,8 @@ int main() {
     try {
         // 1. Create the components using smart pointers
         auto data_handler = std::make_unique<APIDataHandler>(config::SYMBOL);
-        auto strategy = std::make_unique<MovingAverageCrossover>(config::SHORT_WINDOW, config::LONG_WINDOW);
+        auto strategy = std::make_unique<HybridStrategy>(10, 30, 14, 20); // SMA(10,30), RSI(14), VOL_SMA(20)
+       // auto strategy = std::make_unique<MovingAverageCrossover>(config::SHORT_WINDOW, config::LONG_WINDOW);
         auto execution_handler = std::make_unique<SimulatedExecutionHandler>();
         
         // 2. Create and run the backtester
