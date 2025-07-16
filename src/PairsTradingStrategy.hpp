@@ -1,24 +1,22 @@
-// src/PairsTradingStrategy.hpp
 #pragma once
-#include "DataHandler.hpp" // For Bar struct
+#include "DataHandler.hpp"
 #include <string>
 #include <vector>
 #include <numeric>
 #include <cmath>
 #include <stdexcept>
 
-class PairsTradingStrategy { // No inheritance
+class PairsTradingStrategy {
 public:
     PairsTradingStrategy(int lookback_window, double z_score_threshold)
         : lookback_window(lookback_window), z_score_threshold(z_score_threshold) {}
 
     std::string generate_signal(double price_A, double price_B) {
-        // ... all the correct logic from the previous answer ...
         double current_spread = std::log(price_A) - std::log(price_B);
         spreads.push_back(current_spread);
 
         if (spreads.size() < lookback_window) return "HOLD";
-        
+
         auto first = spreads.end() - lookback_window;
         auto last = spreads.end();
         
@@ -33,22 +31,23 @@ public:
 
         double z_score = (current_spread - spread_mean) / spread_std_dev;
 
+        // --- REVERSED MOMENTUM LOGIC ---
         if (z_score > z_score_threshold && position == 0) {
-            position = -1;
-            return "SHORT_SPREAD";
+            position = 1; // Long the spread (BUY the breakout)
+            return "LONG_SPREAD";
         } 
         else if (z_score < -z_score_threshold && position == 0) {
-            position = 1;
-            return "LONG_SPREAD";
+            position = -1; // Short the spread (SELL the breakdown)
+            return "SHORT_SPREAD";
         }
+        // Exit when the momentum fades (Z-score returns towards the mean)
         else if (std::abs(z_score) < 0.5 && position != 0) {
-            position = 0;
+            position = 0; // Exit trade
             return "EXIT_SPREAD";
         }
 
         return "HOLD";
     }
-    // The erroneous function with 'override' has been removed.
 
 private:
     int lookback_window;
