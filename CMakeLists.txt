@@ -8,15 +8,19 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(cpr CONFIG REQUIRED)
 find_package(nlohmann_json CONFIG REQUIRED)
 
-# Add your executable and list its source files
+# --- Executable 1: Your original single-asset bot ---
 add_executable(trading_bot
     src/main.cpp
     src/APIDataHandler.cpp
     src/Backtester.cpp
 )
+target_link_libraries(trading_bot PRIVATE cpr::cpr nlohmann_json::nlohmann_json)
 
-# Link the found libraries to your executable
-target_link_libraries(trading_bot PRIVATE
-    cpr::cpr
-    nlohmann_json::nlohmann_json
+
+# --- Executable 2: The new pairs trading bot ---
+add_executable(pairs_trading_bot
+    src/main_pairs.cpp
+    src/PairsDataHandler.cpp
+    src/PairsBacktester.cpp
 )
+target_link_libraries(pairs_trading_bot PRIVATE cpr::cpr nlohmann_json::nlohmann_json)
