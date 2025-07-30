@@ -1,4 +1,3 @@
-// src/PairsDataHandler.cpp
 #include "PairsDataHandler.hpp"
 #include "config.h"
 #include <cpr/cpr.h>
@@ -10,7 +9,6 @@
 
 using json = nlohmann::json;
 
-// Fetches data for a single symbol (helper function)
 std::vector<Bar> PairsDataHandler::fetch_data_for_symbol(const std::string& symbol) {
     std::cout << "Fetching data for " << symbol << "..." << std::endl;
     std::string url = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol="
@@ -20,7 +18,12 @@ std::vector<Bar> PairsDataHandler::fetch_data_for_symbol(const std::string& symb
     if (r.text.empty()) throw std::runtime_error("Empty response for " + symbol);
 
     json data = json::parse(r.text);
-    if (!data.contains("Time Series (Daily)")) throw std::runtime_error("Invalid API response for " + symbol);
+    if (data.contains("Error Message") || data.contains("Note")) {
+        throw std::runtime_error("API Error for " + symbol + ": " + data.dump(2));
+    }
+    if (!data.contains("Time Series (Daily)")) {
+        throw std::runtime_error("Invalid API response for " + symbol);
+    }
 
     std::vector<Bar> bars;
     for (auto& item : data["Time Series (Daily)"].items()) {
@@ -33,18 +36,15 @@ std::vector<Bar> PairsDataHandler::fetch_data_for_symbol(const std::string& symb
     return bars;
 }
 
-// Constructor: Fetches data for both symbols and synchronizes them by date
 PairsDataHandler::PairsDataHandler(const std::string& symbol_a, const std::string& symbol_b) : current_index(0) {
     auto bars_a = fetch_data_for_symbol(symbol_a);
     auto bars_b = fetch_data_for_symbol(symbol_b);
 
-    // Use a map to synchronize by timestamp
     std::map<std::string, Bar> map_b;
     for (const auto& bar : bars_b) {
         map_b[bar.timestamp] = bar;
     }
 
-    // Only add pairs where the timestamp exists for both stocks
     for (const auto& bar_a : bars_a) {
         if (map_b.count(bar_a.timestamp)) {
             synchronized_bars.push_back({bar_a, map_b[bar_a.timestamp]});

@@ -5,12 +5,9 @@
 #include <string>
 #include <utility> // For std::pair
 
-// This class will fetch and synchronize data for two symbols
 class PairsDataHandler {
 public:
     PairsDataHandler(const std::string& symbol_a, const std::string& symbol_b);
-
-    // Gets the next synchronized pair of bars
     bool get_next_bar_pair(std::pair<Bar, Bar>& bar_pair);
 
 private:
