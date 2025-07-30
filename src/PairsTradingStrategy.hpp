@@ -1,3 +1,4 @@
+// src/PairsTradingStrategy.hpp
 #pragma once
 #include "DataHandler.hpp"
 #include <string>
@@ -27,20 +28,23 @@ public:
         }
         double spread_std_dev = std::sqrt(sq_sum / lookback_window);
 
-        if (spread_std_dev == 0.0) return "HOLD";
+        if (spread_std_dev == 0.0) {
+            latest_z_score = 0.0;
+            return "HOLD";
+        }
 
         double z_score = (current_spread - spread_mean) / spread_std_dev;
+        latest_z_score = z_score; // Store the latest z-score
 
-        // --- REVERSED MOMENTUM LOGIC ---
+        // --- Mean-Reversion Logic ---
         if (z_score > z_score_threshold && position == 0) {
-            position = 1; // Long the spread (BUY the breakout)
-            return "LONG_SPREAD";
+            position = -1; // Short the spread
+            return "SHORT_SPREAD";
         } 
         else if (z_score < -z_score_threshold && position == 0) {
-            position = -1; // Short the spread (SELL the breakdown)
-            return "SHORT_SPREAD";
+            position = 1; // Long the spread
+            return "LONG_SPREAD";
         }
-        // Exit when the momentum fades (Z-score returns towards the mean)
         else if (std::abs(z_score) < 0.5 && position != 0) {
             position = 0; // Exit trade
             return "EXIT_SPREAD";
@@ -49,9 +53,15 @@ public:
         return "HOLD";
     }
 
+    // Public getter for the latest Z-score
+    double get_latest_zscore() const {
+        return latest_z_score;
+    }
+
 private:
     int lookback_window;
     double z_score_threshold;
     std::vector<double> spreads;
     int position = 0;
+    double latest_z_score = 0.0;
 };

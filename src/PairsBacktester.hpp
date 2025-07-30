@@ -24,6 +24,5 @@ private:
     std::string symbol_a;
     std::string symbol_b;
     double capital;
-    // Simple portfolio: 1 = long A/short B, -1 = short A/long B, 0 = flat
     int portfolio_position = 0;
 };

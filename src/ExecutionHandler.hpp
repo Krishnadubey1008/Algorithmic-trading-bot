@@ -1,21 +1,23 @@
-// src/ExecutionHandler.hpp
+// src/PairsExecutionHandler.hpp
 #pragma once
 #include <string>
 #include <iostream>
 
-// Abstract base class for handling order execution
-class ExecutionHandler {
+class PairsExecutionHandler {
 public:
-    virtual ~ExecutionHandler() = default;
-    virtual void execute_order(const std::string& symbol, const std::string& signal, int quantity) = 0;
+    virtual ~PairsExecutionHandler() = default;
+    virtual void execute_pair_order(const std::string& signal, const std::string& symbol_A, const std::string& symbol_B) = 0;
 };
 
-// A simulated handler for backtesting. It prints orders instead of executing them.
-class SimulatedExecutionHandler : public ExecutionHandler {
+class SimulatedPairsExecutionHandler : public PairsExecutionHandler {
 public:
-    void execute_order(const std::string& symbol, const std::string& signal, int quantity) override {
-        std::cout << "SIMULATED EXECUTION -> "
-                  << signal << " " << quantity << " share(s) of " << symbol
-                  << std::endl;
+    void execute_pair_order(const std::string& signal, const std::string& symbol_A, const std::string& symbol_B) override {
+        if (signal == "SHORT_SPREAD") {
+            std::cout << "SIMULATED EXECUTION -> SHORT " << symbol_A << " AND LONG " << symbol_B << std::endl;
+        } else if (signal == "LONG_SPREAD") {
+            std::cout << "SIMULATED EXECUTION -> LONG " << symbol_A << " AND SHORT " << symbol_B << std::endl;
+        } else if (signal == "EXIT_SPREAD") {
+            std::cout << "SIMULATED EXECUTION -> EXIT SPREAD position in " << symbol_A << " and " << symbol_B << std::endl;
+        }
     }
 };
