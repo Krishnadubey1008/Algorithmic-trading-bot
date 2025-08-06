@@ -1,23 +1,20 @@
-// src/PairsExecutionHandler.hpp
+
+// src/ExecutionHandler.hpp
 #pragma once
 #include <string>
 #include <iostream>
 
-class PairsExecutionHandler {
+class ExecutionHandler {
 public:
-    virtual ~PairsExecutionHandler() = default;
-    virtual void execute_pair_order(const std::string& signal, const std::string& symbol_A, const std::string& symbol_B) = 0;
+    virtual ~ExecutionHandler() = default;
+    virtual void execute_order(const std::string& symbol, const std::string& signal, int quantity) = 0;
 };
-
-class SimulatedPairsExecutionHandler : public PairsExecutionHandler {
+// A simulated handler for backtesting. It prints orders instead of executing them.
+class SimulatedExecutionHandler : public ExecutionHandler {
 public:
-    void execute_pair_order(const std::string& signal, const std::string& symbol_A, const std::string& symbol_B) override {
-        if (signal == "SHORT_SPREAD") {
-            std::cout << "SIMULATED EXECUTION -> SHORT " << symbol_A << " AND LONG " << symbol_B << std::endl;
-        } else if (signal == "LONG_SPREAD") {
-            std::cout << "SIMULATED EXECUTION -> LONG " << symbol_A << " AND SHORT " << symbol_B << std::endl;
-        } else if (signal == "EXIT_SPREAD") {
-            std::cout << "SIMULATED EXECUTION -> EXIT SPREAD position in " << symbol_A << " and " << symbol_B << std::endl;
-        }
-    }
+    void execute_order(const std::string& symbol, const std::string& signal, int quantity) override {
+        std::cout << "SIMULATED EXECUTION -> "
+                  << signal << " " << quantity << " share(s) of " << symbol
+                  << std::endl;
+}
 };
