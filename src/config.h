@@ -15,8 +15,8 @@ namespace config {
     const double INITIAL_CAPITAL = 10000.0;
     
     // --- Pairs Trading Strategy Parameters ---
-    const std::string SYMBOL_A = "KO";   // e.g., Coca-Cola
-    const std::string SYMBOL_B = "PEP";  // e.g., PepsiCo
+    const std::string SYMBOL_A = "PYPL";   // e.g., Coca-Cola
+    const std::string SYMBOL_B = "TECH";  // e.g., PepsiCo
     const int LOOKBACK_WINDOW  = 30;     // Lookback period for spread stats
     const double Z_SCORE_THRESHOLD = 2.0; // Z-score to trigger a trade
 }
