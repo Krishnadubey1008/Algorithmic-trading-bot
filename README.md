@@ -9,4 +9,4 @@ output of trading bot with correlation breakout strategy
 
 ![alt text](image.png)
 
-<img width="295" height="147" alt="image" src="https://github.com/user-attachments/assets/29cf8d42-186d-425a-8b52-9c9de999b8d5" />
+<img width="386" height="177" alt="image" src="https://github.com/user-attachments/assets/6fc431da-269c-439a-8494-356e962262da" />
